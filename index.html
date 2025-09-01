@@ -245,10 +245,9 @@
             }
 
             try {
-                // Add the request to the 'pending_users' collection
                 await addDoc(collection(db, 'pending_users'), {
                     username: username,
-                    password: password, // Note: Stored in plaintext temporarily
+                    password: password,
                     role: role,
                     requestedBy: auth.currentUser.uid,
                     requestedAt: new Date().toISOString()
