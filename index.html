@@ -18,6 +18,14 @@
         .solid-btn:hover { background-color: #555555; transform: scale(1.05); }
         .action-btn { background-color: transparent; border: 1px solid #555; padding: 4px 8px; font-size: 0.8rem; border-radius: 6px; }
         .action-btn:hover { background-color: #3d3d3d; }
+        /* Style for the new hyperlinks */
+        td a {
+            color: #60a5fa; /* A nice blue color */
+            text-decoration: underline;
+        }
+        td a:hover {
+            color: #93c5fd;
+        }
     </style>
 </head>
 <body class="p-6 md:p-10 flex flex-col items-center justify-center">
@@ -119,6 +127,27 @@
         let unsubscribeGlitches = null;
 
         const cleanUsername = (email) => email ? email.replace(FAKE_EMAIL_DOMAIN, '') : '';
+
+        /**
+         * NEW FUNCTION: Safely escapes HTML to prevent XSS attacks.
+         */
+        const escapeHTML = (str) => {
+            const p = document.createElement("p");
+            p.textContent = str;
+            return p.innerHTML;
+        };
+
+        /**
+         * NEW FUNCTION: Finds URLs in a string and turns them into clickable links.
+         */
+        const linkify = (text) => {
+            if (!text) return '';
+            const safeText = escapeHTML(text); // First, make sure the text is safe
+            const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+            return safeText.replace(urlRegex, (url) => {
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+            });
+        };
         
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -179,10 +208,17 @@
                     let statusColor = {'Works!': 'text-green-400', 'Patched': 'text-red-400'}[glitch.status] || 'text-gray-400';
                     let actionsHtml = '';
                     if (['admin', 'finder'].includes(currentUserRole)) {
-                        actionsHtml = `<button class="action-btn edit-btn mr-2" data-id="${glitch.id}" data-name="${glitch.glitchName}" data-description="${glitch.description}" data-maparea="${glitch.mapArea}" data-howto="${glitch.howTo}" data-status="${glitch.status}"><i class="fas fa-pencil-alt"></i></button><button class="action-btn delete-btn" data-id="${glitch.id}"><i class="fas fa-trash-alt"></i></button>`;
+                        actionsHtml = `<button class="action-btn edit-btn mr-2" data-id="${glitch.id}" data-name="${escapeHTML(glitch.glitchName)}" data-description="${escapeHTML(glitch.description)}" data-maparea="${escapeHTML(glitch.mapArea)}" data-howto="${escapeHTML(glitch.howTo)}" data-status="${glitch.status}"><i class="fas fa-pencil-alt"></i></button><button class="action-btn delete-btn" data-id="${glitch.id}"><i class="fas fa-trash-alt"></i></button>`;
                     }
                     row.className = 'border-b border-gray-700 hover:bg-gray-700/50';
-                    row.innerHTML = `<td class="py-3 px-4 sm:px-6"><span class="font-bold text-white">${glitch.glitchName || ''}</span></td><td class="py-3 px-4 sm:px-6">${glitch.description || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${glitch.mapArea || ''}</td><td class="py-3 px-4 sm:px-6">${glitch.howTo || ''}</td><td class="py-3 px-4 sm:px-6 text-center"><span class="font-bold ${statusColor}">${glitch.status}</span></td><td class="py-3 px-4 sm:px-6">${glitch.foundBy || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${actionsHtml}</td>`;
+                    // UPDATED PART: Use the linkify function here
+                    row.innerHTML = `<td class="py-3 px-4 sm:px-6"><span class="font-bold text-white">${escapeHTML(glitch.glitchName || '')}</span></td>
+                                     <td class="py-3 px-4 sm:px-6 break-words">${linkify(glitch.description || '')}</td>
+                                     <td class="py-3 px-4 sm:px-6 text-center">${escapeHTML(glitch.mapArea || '')}</td>
+                                     <td class="py-3 px-4 sm:px-6 break-words">${linkify(glitch.howTo || '')}</td>
+                                     <td class="py-3 px-4 sm:px-6 text-center"><span class="font-bold ${statusColor}">${escapeHTML(glitch.status)}</span></td>
+                                     <td class="py-3 px-4 sm:px-6">${escapeHTML(glitch.foundBy || '')}</td>
+                                     <td class="py-3 px-4 sm:px-6 text-center">${actionsHtml}</td>`;
                     glitchTableBody.appendChild(row);
                 });
             });
