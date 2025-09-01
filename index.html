@@ -155,7 +155,15 @@
 
         // Firebase Global Variables
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const firebaseConfig = {
+          apiKey: "AIzaSyCvIiYzPdEuL6OSorfT__DUdBK5RV7qCco",
+          authDomain: "glichfinder-308b1.firebaseapp.com",
+          projectId: "glichfinder-308b1",
+          storageBucket: "glichfinder-308b1.firebasestorage.app",
+          messagingSenderId: "50981925353",
+          appId: "1:50981925353:web:6b924384969afa03b05b78",
+          measurementId: "G-EYNV6R3LMR"
+        };
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // UI Elements
