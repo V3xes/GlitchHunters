@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glitch Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .container-bg {
+            background-color: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        .modal-bg {
+            background-color: rgba(25, 25, 25, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        input, select, textarea {
+            background-color: #3d3d3d;
+            border: 1px solid #555;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #777;
+            box-shadow: 0 0 0 1px #777;
+            outline: none;
+        }
+        .solid-btn {
+            background-color: #4a4a4a;
+            transition: all 0.3s ease;
+        }
+        .solid-btn:hover {
+            background-color: #555555;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10 flex flex-col items-center">
+
+    <!-- Main Application Container -->
+    <div class="max-w-7xl w-full mx-auto container-bg rounded-2xl shadow-2xl p-6 md:p-10 transform transition-all duration-300 border border-gray-600">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-2 tracking-wide">Glitch Tracker</h1>
+            <p class="text-md md:text-lg text-gray-300">Keep track of glitches and collaborate with your team in real time.</p>
+        </header>
+
+        <!-- User Information -->
+        <div class="bg-gray-800/60 p-4 rounded-xl shadow-lg mb-6 flex flex-col sm:flex-row justify-between items-center border border-gray-700">
+            <span class="text-gray-300 text-sm font-mono mb-2 sm:mb-0">Logged in as: <span id="user-id" class="text-gray-400 break-all">...</span></span>
+            <span id="loading-message" class="text-gray-400 text-sm">Initializing...</span>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex justify-end mb-6">
+            <button id="add-glitch-btn" class="px-6 py-3 text-white font-bold rounded-full shadow-lg solid-btn">
+                <i class="fas fa-plus mr-2"></i> Add New Glitch
+            </button>
+        </div>
+
+        <!-- Glitches Table -->
+        <div class="overflow-x-auto container-bg rounded-xl shadow-2xl border border-gray-700">
+            <table class="w-full text-left table-fixed">
+                <thead>
+                    <tr class="bg-gray-800/80 text-gray-300 uppercase text-xs sm:text-sm leading-normal">
+                        <th class="py-3 px-4 sm:px-6 w-1/6">Glitch Name</th>
+                        <th class="py-3 px-4 sm:px-6 w-1/5">Description</th>
+                        <th class="py-3 px-4 sm:px-6 w-1/12">Map Area</th>
+                        <th class="py-3 px-4 sm:px-6 w-1/6">How To</th>
+                        <th class="py-3 px-4 sm:px-6 w-1/12">Status</th>
+                        <th class="py-3 px-4 sm:px-6 w-1/6">Found By</th>
+                    </tr>
+                </thead>
+                <tbody id="glitch-table-body" class="text-gray-400 text-xs sm:text-sm font-light">
+                    <!-- Data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        <div id="no-glitches-message" class="text-center text-gray-500 mt-8 hidden">
+            <p>No glitches found. Click the "Add New Glitch" button to get started!</p>
+        </div>
+    </div>
+
+    <!-- "Made By" Section -->
+    <footer class="mt-8 text-center text-gray-500 text-sm">
+        Made by The Community
+    </footer>
+
+    <!-- Add Glitch Modal -->
+    <div id="add-glitch-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden">
+        <div class="modal-bg rounded-xl p-6 w-full max-w-2xl shadow-3xl border border-gray-700">
+            <div class="flex justify-between items-center pb-3 border-b border-gray-700 mb-4">
+                <h3 class="text-2xl font-bold text-white">Add New Glitch</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-200 text-3xl transition-transform transform hover:rotate-90">&times;</button>
+            </div>
+            <form id="glitch-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="glitch-name" class="block text-sm font-medium text-gray-300 mb-1">Glitch Name</label>
+                        <input type="text" id="glitch-name" name="glitchName" class="w-full rounded-lg p-2.5">
+                    </div>
+                    <div>
+                        <label for="map-area" class="block text-sm font-medium text-gray-300 mb-1">Map Area</label>
+                        <input type="text" id="map-area" name="mapArea" class="w-full rounded-lg p-2.5">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                    <textarea id="description" name="description" rows="3" class="w-full rounded-lg p-2.5"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="how-to" class="block text-sm font-medium text-gray-300 mb-1">How To</label>
+                    <textarea id="how-to" name="howTo" rows="3" class="w-full rounded-lg p-2.5"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-300 mb-1">Status</label>
+                        <select id="status" name="status" class="w-full rounded-lg p-2.5">
+                            <option value="Works!">Works!</option>
+                            <option value="Unconfirmed">Unconfirmed</option>
+                            <option value="Patched">Patched</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="notes" class="block text-sm font-medium text-gray-300 mb-1">Notes</label>
+                        <textarea id="notes" name="notes" rows="1" class="w-full rounded-lg p-2.5"></textarea>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label for="found-by" class="block text-sm font-medium text-gray-300 mb-1">Found By</label>
+                    <input type="text" id="found-by" name="foundBy" class="w-full rounded-lg p-2.5">
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="px-6 py-3 text-white font-bold rounded-full solid-btn">
+                        <i class="fas fa-save mr-2"></i> Save Glitch
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Global Variables
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // UI Elements
+        const addGlitchBtn = document.getElementById('add-glitch-btn');
+        const addGlitchModal = document.getElementById('add-glitch-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const glitchForm = document.getElementById('glitch-form');
+        const glitchTableBody = document.getElementById('glitch-table-body');
+        const noGlitchesMessage = document.getElementById('no-glitches-message');
+        const userIdElement = document.getElementById('user-id');
+        const loadingMessage = document.getElementById('loading-message');
+
+        let db;
+        let auth;
+        let userId;
+
+        // Function to render the glitches table
+        const renderGlitches = (glitches) => {
+            glitchTableBody.innerHTML = '';
+            if (glitches.length === 0) {
+                noGlitchesMessage.classList.remove('hidden');
+                return;
+            }
+            noGlitchesMessage.classList.add('hidden');
+
+            glitches.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            glitches.forEach((glitch, index) => {
+                const row = document.createElement('tr');
+                row.className = `border-b border-gray-700 transition-colors duration-200 ${index % 2 === 0 ? 'bg-gray-800/50' : 'bg-gray-800/20'} hover:bg-gray-700/50`;
+                
+                let statusText;
+                let statusColor;
+                switch(glitch.status) {
+                    case 'Works!':
+                        statusText = 'Works!';
+                        statusColor = 'text-green-400';
+                        break;
+                    case 'Unconfirmed':
+                        statusText = 'Unconfirmed';
+                        statusColor = 'text-gray-400';
+                        break;
+                    case 'Patched':
+                        statusText = 'Patched';
+                        statusColor = 'text-red-400';
+                        break;
+                }
+
+                row.innerHTML = `
+                    <td class="py-3 px-4 sm:px-6 whitespace-normal w-1/6">
+                        <span class="font-bold text-white">${glitch.glitchName || ''}</span>
+                    </td>
+                    <td class="py-3 px-4 sm:px-6 whitespace-normal w-1/5">${glitch.description || ''}</td>
+                    <td class="py-3 px-4 sm:px-6 whitespace-normal w-1/12 text-center">${glitch.mapArea || ''}</td>
+                    <td class="py-3 px-4 sm:px-6 whitespace-normal w-1/6">${glitch.howTo || ''}</td>
+                    <td class="py-3 px-4 sm:px-6 whitespace-normal w-1/12 text-center">
+                        <span class="font-bold ${statusColor}">${statusText}</span>
+                    </td>
+                    <td class="py-3 px-4 sm:px-6 whitespace-normal w-1/6">${glitch.foundBy || ''}</td>
+                `;
+                glitchTableBody.appendChild(row);
+            });
+        };
+
+        // Initialize Firebase and set up listeners
+        const initApp = async () => {
+            if (Object.keys(firebaseConfig).length === 0) {
+                loadingMessage.textContent = 'Firebase config not found. Please provide a config.';
+                console.error("Firebase config is missing.");
+                return;
+            }
+            
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                setLogLevel('debug');
+                
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                userId = auth.currentUser?.uid || 'anonymous';
+                userIdElement.textContent = userId;
+                loadingMessage.textContent = 'Connected. Listening for updates...';
+
+                const glitchesCollectionRef = collection(db, `artifacts/${appId}/public/data/glitches`);
+                
+                onSnapshot(glitchesCollectionRef, (querySnapshot) => {
+                    const glitches = [];
+                    querySnapshot.forEach((doc) => {
+                        glitches.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderGlitches(glitches);
+                }, (error) => {
+                    console.error("Error fetching glitches: ", error);
+                    loadingMessage.textContent = 'Error fetching data. Check console.';
+                });
+
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                loadingMessage.textContent = 'Firebase initialization failed. See console for details.';
+            }
+        };
+
+        // Event Listeners
+        window.addEventListener('load', initApp);
+
+        addGlitchBtn.addEventListener('click', () => {
+            addGlitchModal.classList.remove('hidden');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            addGlitchModal.classList.add('hidden');
+            glitchForm.reset();
+        });
+
+        glitchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(glitchForm);
+            const glitchName = formData.get('glitchName').trim();
+            const description = formData.get('description').trim();
+            const mapArea = formData.get('mapArea').trim();
+            const howTo = formData.get('howTo').trim();
+            const status = formData.get('status');
+            const notes = formData.get('notes').trim();
+            const foundBy = formData.get('foundBy').trim();
+
+            if (!glitchName) {
+                console.log('Please enter a glitch name.');
+                return;
+            }
+            
+            const glitchData = { glitchName, description, mapArea, howTo, status, notes, foundBy, createdAt: new Date().toISOString() };
+
+            try {
+                const glitchesCollectionRef = collection(db, `artifacts/${appId}/public/data/glitches`);
+                await addDoc(glitchesCollectionRef, glitchData);
+                
+                glitchForm.reset();
+                addGlitchModal.classList.add('hidden');
+            } catch (error) {
+                console.error("Error adding document: ", error);
+            }
+        });
+    </script>
+</body>
+</html>
