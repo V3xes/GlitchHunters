@@ -16,6 +16,8 @@
         input:focus, select:focus, textarea:focus { border-color: #777; box-shadow: 0 0 0 1px #777; outline: none; }
         .solid-btn { background-color: #4a4a4a; }
         .solid-btn:hover { background-color: #555555; transform: scale(1.05); }
+        .action-btn { background-color: transparent; border: 1px solid #555; padding: 4px 8px; font-size: 0.8rem; border-radius: 6px; }
+        .action-btn:hover { background-color: #3d3d3d; }
     </style>
 </head>
 <body class="p-6 md:p-10 flex flex-col items-center justify-center">
@@ -25,37 +27,23 @@
         <div class="container-bg rounded-2xl shadow-2xl p-8 border border-gray-600">
             <h2 class="text-3xl font-bold text-center text-white mb-6">Glitch Tracker Login</h2>
             <div id="auth-error" class="bg-red-500/20 text-red-300 p-3 rounded-lg mb-4 text-center text-sm hidden"></div>
-            <form id="login-form">
-                <div class="mb-4">
-                    <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Username</label>
-                    <input type="text" id="username" name="username" class="w-full" required>
-                </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
-                    <input type="password" id="password" name="password" class="w-full" required>
-                </div>
-                <button type="submit" class="w-full px-6 py-3 text-white font-bold rounded-full solid-btn">Log In</button>
-            </form>
+            <form id="login-form"><div class="mb-4"><label for="username" class="block text-sm font-medium text-gray-300 mb-1">Username</label><input type="text" id="username" name="username" class="w-full" required></div><div class="mb-6"><label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label><input type="password" id="password" name="password" class="w-full" required></div><button type="submit" class="w-full px-6 py-3 text-white font-bold rounded-full solid-btn">Log In</button></form>
         </div>
     </div>
 
     <!-- Main Application Container -->
     <div id="app-container" class="max-w-7xl w-full mx-auto container-bg rounded-2xl shadow-2xl p-6 md:p-10 border border-gray-600 hidden">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-2 tracking-wide">Glitch Tracker</h1>
-            <p class="text-md md:text-lg text-gray-300">Keep track of glitches and collaborate with your team in real time.</p>
-        </header>
+        <header class="text-center mb-10"><h1 class="text-4xl md:text-6xl font-extrabold text-white mb-2 tracking-wide">Glitch Tracker</h1><p class="text-md md:text-lg text-gray-300">Keep track of glitches and collaborate with your team in real time.</p></header>
         <div class="bg-gray-800/60 p-4 rounded-xl shadow-lg mb-6 flex flex-col sm:flex-row justify-between items-center border border-gray-700">
             <span class="text-gray-300 text-sm font-mono mb-2 sm:mb-0">Logged in as: <span id="user-name" class="text-gray-400 break-all">...</span> (<span id="user-role" class="font-bold"></span>)</span>
-            <div>
-                 <button id="admin-panel-btn" class="px-4 py-2 text-sm text-white font-bold rounded-full shadow-lg solid-btn hidden mr-4"><i class="fas fa-user-shield mr-2"></i>Admin Panel</button>
-                 <button id="logout-btn" class="px-4 py-2 text-sm text-white font-bold rounded-full solid-btn"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button>
-            </div>
+            <div><button id="admin-panel-btn" class="px-4 py-2 text-sm text-white font-bold rounded-full shadow-lg solid-btn hidden mr-4"><i class="fas fa-user-shield mr-2"></i>Admin Panel</button><button id="logout-btn" class="px-4 py-2 text-sm text-white font-bold rounded-full solid-btn"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button></div>
         </div>
         <div id="action-buttons-container" class="flex justify-end mb-6 hidden"><button id="add-glitch-btn" class="px-6 py-3 text-white font-bold rounded-full shadow-lg solid-btn"><i class="fas fa-plus mr-2"></i> Add New Glitch</button></div>
         <div class="overflow-x-auto container-bg rounded-xl shadow-2xl border border-gray-700">
-            <table class="w-full text-left table-fixed">
-                <thead><tr class="bg-gray-800/80 text-gray-300 uppercase text-xs sm:text-sm leading-normal"><th class="py-3 px-4 sm:px-6 w-1/6">Glitch Name</th><th class="py-3 px-4 sm:px-6 w-1/5">Description</th><th class="py-3 px-4 sm:px-6 w-1/12">Map Area</th><th class="py-3 px-4 sm:px-6 w-1/6">How To</th><th class="py-3 px-4 sm:px-6 w-1/12">Status</th><th class="py-3 px-4 sm:px-6 w-1/6">Found By</th></tr></thead>
+            <table class="w-full text-left table-auto">
+                <thead><tr class="bg-gray-800/80 text-gray-300 uppercase text-xs sm:text-sm leading-normal">
+                    <th class="py-3 px-4 sm:px-6">Glitch Name</th><th class="py-3 px-4 sm:px-6">Description</th><th class="py-3 px-4 sm:px-6">Map Area</th><th class="py-3 px-4 sm:px-6">How To</th><th class="py-3 px-4 sm:px-6">Status</th><th class="py-3 px-4 sm:px-6">Found By</th><th class="py-3 px-4 sm:px-6 text-center">Actions</th>
+                </tr></thead>
                 <tbody id="glitch-table-body" class="text-gray-400 text-xs sm:text-sm font-light"></tbody>
             </table>
         </div>
@@ -63,37 +51,15 @@
     </div>
 
     <!-- Modals -->
-    <div id="add-glitch-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden"><div class="modal-bg rounded-xl p-6 w-full max-w-2xl shadow-3xl border border-gray-700"><div class="flex justify-between items-center pb-3 border-b border-gray-700 mb-4"><h3 class="text-2xl font-bold text-white">Add New Glitch</h3><button class="close-modal-btn text-gray-400 hover:text-gray-200 text-3xl transition-transform transform hover:rotate-90">&times;</button></div><form id="glitch-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="glitch-name" class="block text-sm font-medium text-gray-300 mb-1">Glitch Name</label><input type="text" id="glitch-name" name="glitchName" class="w-full"></div><div><label for="map-area" class="block text-sm font-medium text-gray-300 mb-1">Map Area</label><input type="text" id="map-area" name="mapArea" class="w-full"></div></div><div class="mb-4"><label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label><textarea id="description" name="description" rows="3" class="w-full"></textarea></div><div class="mb-4"><label for="how-to" class="block text-sm font-medium text-gray-300 mb-1">How To</label><textarea id="how-to" name="howTo" rows="3" class="w-full"></textarea></div><div class="mb-6"><label for="status" class="block text-sm font-medium text-gray-300 mb-1">Status</label><select id="status" name="status" class="w-full"><option>Works!</option><option>Unconfirmed</option><option>Patched</option></select></div><div class="flex justify-end"><button type="submit" class="px-6 py-3 text-white font-bold rounded-full solid-btn"><i class="fas fa-save mr-2"></i> Save Glitch</button></div></form></div></div>
+    <div id="add-glitch-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden"><div class="modal-bg rounded-xl p-6 w-full max-w-2xl shadow-3xl border border-gray-700"><div class="flex justify-between items-center pb-3 border-b border-gray-700 mb-4"><h3 id="modal-title" class="text-2xl font-bold text-white">Add New Glitch</h3><button class="close-modal-btn text-gray-400 hover:text-gray-200 text-3xl transition-transform transform hover:rotate-90">&times;</button></div><form id="glitch-form"><input type="hidden" id="edit-glitch-id"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="glitch-name" class="block text-sm font-medium text-gray-300 mb-1">Glitch Name</label><input type="text" id="glitch-name" name="glitchName" class="w-full"></div><div><label for="map-area" class="block text-sm font-medium text-gray-300 mb-1">Map Area</label><input type="text" id="map-area" name="mapArea" class="w-full"></div></div><div class="mb-4"><label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label><textarea id="description" name="description" rows="3" class="w-full"></textarea></div><div class="mb-4"><label for="how-to" class="block text-sm font-medium text-gray-300 mb-1">How To</label><textarea id="how-to" name="howTo" rows="3" class="w-full"></textarea></div><div class="mb-6"><label for="status" class="block text-sm font-medium text-gray-300 mb-1">Status</label><select id="status" name="status" class="w-full"><option>Works!</option><option>Unconfirmed</option><option>Patched</option></select></div><div class="flex justify-end"><button type="submit" id="save-glitch-btn" class="px-6 py-3 text-white font-bold rounded-full solid-btn"><i class="fas fa-save mr-2"></i> Save Glitch</button></div></form></div></div>
 
-    <div id="admin-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-bg rounded-xl p-6 w-full max-w-4xl shadow-3xl border border-gray-700 max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-center pb-3 border-b border-gray-700 mb-4"><h3 class="text-2xl font-bold text-white">Admin Panel</h3><button class="close-modal-btn text-gray-400 hover:text-gray-200 text-3xl transition-transform transform hover:rotate-90">&times;</button></div>
-            <div class="mb-6 p-4 border border-gray-700 rounded-lg">
-                <h4 class="text-lg font-bold text-white mb-3">Create New User</h4>
-                <form id="add-user-form" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                    <div><label for="new-username" class="block text-sm text-gray-300 mb-1">Username</label><input type="text" id="new-username" class="w-full text-sm"></div>
-                    <div><label for="new-password" class="block text-sm text-gray-300 mb-1">Password</label><input type="password" id="new-password" class="w-full text-sm"></div>
-                    <div><label for="new-role" class="block text-sm text-gray-300 mb-1">Role</label><select id="new-role" class="w-full text-sm"><option value="viewer">Viewer</option><option value="finder">Finder</option><option value="admin">Admin</option></select></div>
-                    <button type="submit" class="px-4 py-2 text-white font-bold rounded-lg solid-btn h-10">Create User</button>
-                </form>
-                <div id="add-user-status" class="mt-3 text-sm text-center"></div>
-            </div>
-            <h4 class="text-lg font-bold text-white mb-3">Manage Existing Users</h4>
-            <div class="overflow-y-auto">
-                <table class="w-full text-left">
-                    <thead><tr class="bg-gray-800/80 text-gray-300 uppercase text-xs leading-normal"><th class="py-3 px-4">Username</th><th class="py-3 px-4">Role</th><th class="py-3 px-4">UID</th></tr></thead>
-                    <tbody id="user-list-body" class="text-gray-400 text-sm font-light"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <div id="admin-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden"><div class="modal-bg rounded-xl p-6 w-full max-w-4xl shadow-3xl border border-gray-700 max-h-[90vh] flex flex-col"><div class="flex justify-between items-center pb-3 border-b border-gray-700 mb-4"><h3 class="text-2xl font-bold text-white">Admin Panel</h3><button class="close-modal-btn text-gray-400 hover:text-gray-200 text-3xl transition-transform transform hover:rotate-90">&times;</button></div><div class="mb-6 p-4 border border-gray-700 rounded-lg"><h4 class="text-lg font-bold text-white mb-3">Create New User</h4><form id="add-user-form" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end"><div><label for="new-username" class="block text-sm text-gray-300 mb-1">Username</label><input type="text" id="new-username" class="w-full text-sm"></div><div><label for="new-password" class="block text-sm text-gray-300 mb-1">Password</label><input type="password" id="new-password" class="w-full text-sm"></div><div><label for="new-role" class="block text-sm text-gray-300 mb-1">Role</label><select id="new-role" class="w-full text-sm"><option value="viewer">Viewer</option><option value="finder">Finder</option><option value="admin">Admin</option></select></div><button type="submit" class="px-4 py-2 text-white font-bold rounded-lg solid-btn h-10">Create User</button></form><div id="add-user-status" class="mt-3 text-sm text-center"></div></div><h4 class="text-lg font-bold text-white mb-3">Manage Existing Users</h4><div class="overflow-y-auto"><table class="w-full text-left"><thead><tr class="bg-gray-800/80 text-gray-300 uppercase text-xs leading-normal"><th class="py-3 px-4">Username</th><th class="py-3 px-4">Role</th><th class="py-3 px-4">UID</th></tr></thead><tbody id="user-list-body" class="text-gray-400 text-sm font-light"></tbody></table></div></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-        import { getFirestore, collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc, setDoc, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-        // IMPORTANT: PASTE YOUR FIREBASE CONFIGURATION HERE
         const firebaseConfig = {
             apiKey: "AIzaSyD3qMmW3Pk_zXNlny_THtd_8K-QsLL8WT0",
             authDomain: "betterglichfinder.firebaseapp.com",
@@ -131,15 +97,18 @@
         let currentUserRole = null;
         let unsubscribeGlitches = null;
 
-        const showAuthError = (message) => { authError.textContent = message; authError.classList.remove('hidden'); };
-        const hideAuthError = () => { authError.classList.add('hidden'); };
         const cleanUsername = (email) => email ? email.replace(FAKE_EMAIL_DOMAIN, '') : '';
-        const showView = (view) => {
-            loginContainer.classList.add('hidden');
-            appContainer.classList.add('hidden');
-            if (view === 'login') loginContainer.classList.remove('hidden');
-            if (view === 'app') appContainer.classList.remove('hidden');
-        };
+        
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+                const role = userDocSnap.exists() ? userDocSnap.data().role : null;
+                setupUIForUser(user, role);
+            } else {
+                setupUIForUser(null, null);
+            }
+        });
 
         const setupUIForUser = (user, role) => {
             if (user && role) {
@@ -149,27 +118,20 @@
                 userRoleElement.className = `font-bold ${role === 'admin' ? 'text-red-400' : role === 'finder' ? 'text-blue-400' : 'text-gray-400'}`;
                 adminPanelBtn.classList.toggle('hidden', role !== 'admin');
                 actionButtonsContainer.classList.toggle('hidden', !['admin', 'finder'].includes(role));
-                showView('app');
+                loginContainer.classList.add('hidden');
+                appContainer.classList.remove('hidden');
                 listenForGlitches();
             } else {
-                showView('login');
+                currentUserRole = null;
+                loginContainer.classList.remove('hidden');
+                appContainer.classList.add('hidden');
                 if (unsubscribeGlitches) unsubscribeGlitches();
             }
         };
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const userDocRef = doc(db, 'users', user.uid);
-                const userDocSnap = await getDoc(userDocRef);
-                setupUIForUser(user, userDocSnap.exists() ? userDocSnap.data().role : null);
-            } else {
-                setupUIForUser(null, null);
-            }
-        });
-
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            hideAuthError();
+            authError.classList.add('hidden');
             const username = loginForm.username.value.trim().toLowerCase();
             const password = loginForm.password.value;
             const email = username + FAKE_EMAIL_DOMAIN;
@@ -177,7 +139,8 @@
                 await signInWithEmailAndPassword(auth, email, password);
                 loginForm.reset();
             } catch (error) {
-                showAuthError("Invalid username or password.");
+                authError.textContent = "Invalid username or password.";
+                authError.classList.remove('hidden');
             }
         });
 
@@ -185,54 +148,103 @@
 
         function listenForGlitches() {
             if (unsubscribeGlitches) unsubscribeGlitches();
-            const glitchesCollectionRef = collection(db, "glitches");
-            unsubscribeGlitches = onSnapshot(query(glitchesCollectionRef), (snapshot) => {
+            const q = query(collection(db, "glitches"));
+            unsubscribeGlitches = onSnapshot(q, (snapshot) => {
                 const glitches = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 glitchTableBody.innerHTML = '';
                 document.getElementById('no-glitches-message').classList.toggle('hidden', glitches.length > 0);
-                glitches.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(glitch => {
+                glitches.sort((a,b) => (b.createdAt || '').localeCompare(a.createdAt || '')).forEach(glitch => {
                     const row = document.createElement('tr');
                     let statusColor = {'Works!': 'text-green-400', 'Patched': 'text-red-400'}[glitch.status] || 'text-gray-400';
+                    let actionsHtml = '';
+                    if (['admin', 'finder'].includes(currentUserRole)) {
+                        actionsHtml = `
+                            <button class="action-btn edit-btn mr-2" data-id="${glitch.id}" data-name="${glitch.glitchName}" data-description="${glitch.description}" data-maparea="${glitch.mapArea}" data-howto="${glitch.howTo}" data-status="${glitch.status}"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="action-btn delete-btn" data-id="${glitch.id}"><i class="fas fa-trash-alt"></i></button>
+                        `;
+                    }
                     row.className = 'border-b border-gray-700 hover:bg-gray-700/50';
-                    row.innerHTML = `<td class="py-3 px-4 sm:px-6"><span class="font-bold text-white">${glitch.glitchName || ''}</span></td><td class="py-3 px-4 sm:px-6">${glitch.description || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${glitch.mapArea || ''}</td><td class="py-3 px-4 sm:px-6">${glitch.howTo || ''}</td><td class="py-3 px-4 sm:px-6 text-center"><span class="font-bold ${statusColor}">${glitch.status}</span></td><td class="py-3 px-4 sm:px-6">${glitch.foundBy || ''}</td>`;
+                    row.innerHTML = `<td class="py-3 px-4 sm:px-6"><span class="font-bold text-white">${glitch.glitchName || ''}</span></td><td class="py-3 px-4 sm:px-6">${glitch.description || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${glitch.mapArea || ''}</td><td class="py-3 px-4 sm:px-6">${glitch.howTo || ''}</td><td class="py-3 px-4 sm:px-6 text-center"><span class="font-bold ${statusColor}">${glitch.status}</span></td><td class="py-3 px-4 sm:px-6">${glitch.foundBy || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${actionsHtml}</td>`;
                     glitchTableBody.appendChild(row);
                 });
             });
         }
+        
+        function resetGlitchModal() {
+            glitchForm.reset();
+            document.getElementById('edit-glitch-id').value = '';
+            document.getElementById('modal-title').textContent = 'Add New Glitch';
+            document.getElementById('save-glitch-btn').innerHTML = '<i class="fas fa-save mr-2"></i> Save Glitch';
+        }
+
+        addGlitchBtn.addEventListener('click', () => {
+            resetGlitchModal();
+            addGlitchModal.classList.remove('hidden');
+        });
+
+        glitchTableBody.addEventListener('click', async (e) => {
+            const editBtn = e.target.closest('.edit-btn');
+            const deleteBtn = e.target.closest('.delete-btn');
+
+            if (editBtn) {
+                resetGlitchModal();
+                const { id, name, description, maparea, howto, status } = editBtn.dataset;
+                document.getElementById('edit-glitch-id').value = id;
+                document.getElementById('glitch-name').value = name;
+                document.getElementById('description').value = description;
+                document.getElementById('map-area').value = maparea;
+                document.getElementById('how-to').value = howto;
+                document.getElementById('status').value = status;
+                document.getElementById('modal-title').textContent = 'Edit Glitch';
+                document.getElementById('save-glitch-btn').innerHTML = '<i class="fas fa-save mr-2"></i> Update Glitch';
+                addGlitchModal.classList.remove('hidden');
+            }
+
+            if (deleteBtn) {
+                const glitchId = deleteBtn.dataset.id;
+                if (confirm('Are you sure you want to delete this glitch?')) {
+                    try {
+                        await deleteDoc(doc(db, 'glitches', glitchId));
+                    } catch (error) {
+                        console.error("Error deleting glitch: ", error);
+                        alert('You do not have permission to delete this glitch.');
+                    }
+                }
+            }
+        });
 
         glitchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = new FormData(glitchForm);
-            const glitchData = {
-                glitchName: formData.get('glitchName').trim(), description: formData.get('description').trim(), mapArea: formData.get('mapArea').trim(), howTo: formData.get('howTo').trim(), status: formData.get('status'),
-                foundBy: cleanUsername(auth.currentUser.email), createdAt: new Date().toISOString()
-            };
-            if (!glitchData.glitchName) { alert("Glitch Name is required."); return; }
-            try {
-                // The 'addDoc' function for glitches has been removed for brevity. Re-add if needed.
-                await setDoc(doc(collection(db, "glitches")), glitchData); // Using setDoc which is similar to addDoc
-                glitchForm.reset();
-                addGlitchModal.classList.add('hidden');
-            } catch (error) { alert("You do not have permission to add glitches."); }
-        });
-        
-        async function populateAdminPanel() {
-             if (currentUserRole !== 'admin') return;
-            const usersCollectionRef = collection(db, 'users');
-            const userSnapshot = await getDocs(usersCollectionRef);
-            const users = userSnapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
-            userListBody.innerHTML = '';
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                row.className = 'border-b border-gray-700';
-                row.innerHTML = `<td class="py-3 px-4">${user.username || 'N/A'}</td><td class="py-3 px-4"><select data-uid="${user.id}" class="role-selector w-full bg-gray-700 border-gray-600 rounded p-2" ${user.id === auth.currentUser.uid ? 'disabled' : ''}><option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Viewer</option><option value="finder" ${user.role === 'finder' ? 'selected' : ''}>Finder</option><option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option></select></td><td class="py-3 px-4 text-xs font-mono text-gray-500">${user.id}</td>`;
-                userListBody.appendChild(row);
-            });
-        }
+            const glitchId = document.getElementById('edit-glitch-id').value;
+            const foundBy = glitchId ? undefined : cleanUsername(auth.currentUser.email);
+            const createdAt = glitchId ? undefined : new Date().toISOString();
 
-        adminPanelBtn.addEventListener('click', () => {
-            populateAdminPanel();
-            adminModal.classList.remove('hidden');
+            let glitchData = {
+                glitchName: document.getElementById('glitch-name').value.trim(),
+                description: document.getElementById('description').value.trim(),
+                mapArea: document.getElementById('map-area').value.trim(),
+                howTo: document.getElementById('how-to').value.trim(),
+                status: document.getElementById('status').value,
+            };
+
+            // Only add foundBy and createdAt for new glitches
+            if (!glitchId) {
+                glitchData.foundBy = foundBy;
+                glitchData.createdAt = createdAt;
+            }
+
+            try {
+                if (glitchId) {
+                    const glitchRef = doc(db, 'glitches', glitchId);
+                    await updateDoc(glitchRef, glitchData);
+                } else {
+                    await addDoc(collection(db, 'glitches'), glitchData);
+                }
+                addGlitchModal.classList.add('hidden');
+            } catch (error) {
+                console.error("Error saving glitch: ", error);
+                alert("You do not have permission to save this glitch.");
+            }
         });
 
         addUserForm.addEventListener('submit', async (e) => {
@@ -253,49 +265,53 @@
             const fakeEmail = username + FAKE_EMAIL_DOMAIN;
 
             try {
-                // Step 1: Create user in Authentication (this is a temporary, secondary auth instance)
-                // We must create a new app instance to do this without logging the admin out.
-                const tempApp = initializeApp(firebaseConfig, 'Secondary');
+                // We must use a temporary, secondary app instance to create a user
+                // without logging the current admin out. This is a known pattern.
+                const tempApp = initializeApp(firebaseConfig, 'SecondaryTemp' + Date.now());
                 const tempAuth = getAuth(tempApp);
                 const newUserCredential = await createUserWithEmailAndPassword(tempAuth, fakeEmail, password);
                 const newUser = newUserCredential.user;
 
-                // Step 2: Create the user role document in Firestore.
-                // This is allowed because the currently logged-in user (the admin) has permission.
-                await setDoc(doc(db, 'users', newUser.uid), {
-                    username: username,
-                    role: role
-                });
+                // Now, using the main app's permissions, set the role in Firestore.
+                await setDoc(doc(db, 'users', newUser.uid), { username, role });
                 
                 addUserStatus.textContent = `User "${username}" created successfully!`;
                 addUserStatus.className = 'mt-3 text-sm text-center text-green-400';
                 addUserForm.reset();
                 populateAdminPanel(); // Refresh the user list
-
             } catch (error) {
-                let message = 'An unknown error occurred.';
-                if (error.code === 'auth/email-already-in-use') {
-                    message = 'This username is already taken.';
-                } else {
-                    message = error.message;
-                }
-                addUserStatus.textContent = `Error: ${message}`;
+                addUserStatus.textContent = `Error: ${error.code === 'auth/email-already-in-use' ? 'Username is already taken.' : error.message}`;
                 addUserStatus.className = 'mt-3 text-sm text-center text-red-400';
-                console.error("Error creating user:", error);
             }
         });
+        
+        async function populateAdminPanel() {
+             if (currentUserRole !== 'admin') return;
+            const userSnapshot = await getDocs(collection(db, 'users'));
+            const users = userSnapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+            userListBody.innerHTML = '';
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-700';
+                row.innerHTML = `<td class="py-3 px-4">${user.username || 'N/A'}</td><td class="py-3 px-4"><select data-uid="${user.id}" class="role-selector w-full bg-gray-700 border-gray-600 rounded p-2" ${user.id === auth.currentUser.uid ? 'disabled' : ''}><option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Viewer</option><option value="finder" ${user.role === 'finder' ? 'selected' : ''}>Finder</option><option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option></select></td><td class="py-3 px-4 text-xs font-mono text-gray-500">${user.id}</td>`;
+                userListBody.appendChild(row);
+            });
+        }
 
+        adminPanelBtn.addEventListener('click', () => {
+            populateAdminPanel();
+            adminModal.classList.remove('hidden');
+        });
+        
         userListBody.addEventListener('change', async (e) => {
             if (e.target.classList.contains('role-selector')) {
                 const newRole = e.target.value;
                 const uid = e.target.dataset.uid;
                 if (uid === auth.currentUser.uid) { e.target.value = currentUserRole; return; }
-                const userDocRef = doc(db, 'users', uid);
-                try { await updateDoc(userDocRef, { role: newRole }); } catch (error) { console.error("Error updating role:", error); }
+                try { await updateDoc(doc(db, 'users', uid), { role: newRole }); } catch (error) { console.error("Error updating role:", error); }
             }
         });
 
-        addGlitchBtn.addEventListener('click', () => addGlitchModal.classList.remove('hidden'));
         document.querySelectorAll('.close-modal-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 addGlitchModal.classList.add('hidden');
