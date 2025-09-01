@@ -25,9 +25,28 @@
     <!-- Login Container -->
     <div id="login-container" class="w-full max-w-md">
         <div class="container-bg rounded-2xl shadow-2xl p-8 border border-gray-600">
-            <h2 class="text-3xl font-bold text-center text-white mb-6">Glitch Tracker Login</h2>
+            <h2 class="text-3xl font-bold text-center text-white mb-6">Login</h2>
             <div id="auth-error" class="bg-red-500/20 text-red-300 p-3 rounded-lg mb-4 text-center text-sm hidden"></div>
-            <form id="login-form"><div class="mb-4"><label for="username" class="block text-sm font-medium text-gray-300 mb-1">Username</label><input type="text" id="username" name="username" class="w-full" required></div><div class="mb-6"><label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label><input type="password" id="password" name="password" class="w-full" required></div><button type="submit" class="w-full px-6 py-3 text-white font-bold rounded-full solid-btn">Log In</button></form>
+            <form id="login-form">
+                <div class="mb-4"><label for="username" class="block text-sm font-medium text-gray-300 mb-1">Username</label><input type="text" id="username" name="username" class="w-full" required></div>
+                <div class="mb-6"><label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label><input type="password" id="password" name="password" class="w-full" required></div>
+                <button type="submit" class="w-full px-6 py-3 text-white font-bold rounded-full solid-btn">Log In</button>
+            </form>
+            <p class="text-center text-gray-400 text-sm mt-6">Don't have an account? <a href="#" id="show-register-link" class="text-blue-400 hover:underline">Register here</a></p>
+        </div>
+    </div>
+    
+    <!-- Registration Container -->
+    <div id="register-container" class="w-full max-w-md hidden">
+        <div class="container-bg rounded-2xl shadow-2xl p-8 border border-gray-600">
+            <h2 class="text-3xl font-bold text-center text-white mb-6">Register</h2>
+            <div id="register-error" class="bg-red-500/20 text-red-300 p-3 rounded-lg mb-4 text-center text-sm hidden"></div>
+            <form id="register-form">
+                <div class="mb-4"><label for="register-username" class="block text-sm font-medium text-gray-300 mb-1">Username</label><input type="text" id="register-username" name="username" class="w-full" required></div>
+                <div class="mb-6"><label for="register-password" class="block text-sm font-medium text-gray-300 mb-1">Password</label><input type="password" id="register-password" name="password" class="w-full" required></div>
+                <button type="submit" class="w-full px-6 py-3 text-white font-bold rounded-full solid-btn">Create Account</button>
+            </form>
+            <p class="text-center text-gray-400 text-sm mt-6">Already have an account? <a href="#" id="show-login-link" class="text-blue-400 hover:underline">Login here</a></p>
         </div>
     </div>
 
@@ -52,8 +71,7 @@
 
     <!-- Modals -->
     <div id="add-glitch-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden"><div class="modal-bg rounded-xl p-6 w-full max-w-2xl shadow-3xl border border-gray-700"><div class="flex justify-between items-center pb-3 border-b border-gray-700 mb-4"><h3 id="modal-title" class="text-2xl font-bold text-white">Add New Glitch</h3><button class="close-modal-btn text-gray-400 hover:text-gray-200 text-3xl transition-transform transform hover:rotate-90">&times;</button></div><form id="glitch-form"><input type="hidden" id="edit-glitch-id"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="glitch-name" class="block text-sm font-medium text-gray-300 mb-1">Glitch Name</label><input type="text" id="glitch-name" name="glitchName" class="w-full"></div><div><label for="map-area" class="block text-sm font-medium text-gray-300 mb-1">Map Area</label><input type="text" id="map-area" name="mapArea" class="w-full"></div></div><div class="mb-4"><label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label><textarea id="description" name="description" rows="3" class="w-full"></textarea></div><div class="mb-4"><label for="how-to" class="block text-sm font-medium text-gray-300 mb-1">How To</label><textarea id="how-to" name="howTo" rows="3" class="w-full"></textarea></div><div class="mb-6"><label for="status" class="block text-sm font-medium text-gray-300 mb-1">Status</label><select id="status" name="status" class="w-full"><option>Works!</option><option>Unconfirmed</option><option>Patched</option></select></div><div class="flex justify-end"><button type="submit" id="save-glitch-btn" class="px-6 py-3 text-white font-bold rounded-full solid-btn"><i class="fas fa-save mr-2"></i> Save Glitch</button></div></form></div></div>
-
-    <div id="admin-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden"><div class="modal-bg rounded-xl p-6 w-full max-w-4xl shadow-3xl border border-gray-700 max-h-[90vh] flex flex-col"><div class="flex justify-between items-center pb-3 border-b border-gray-700 mb-4"><h3 class="text-2xl font-bold text-white">Admin Panel</h3><button class="close-modal-btn text-gray-400 hover:text-gray-200 text-3xl transition-transform transform hover:rotate-90">&times;</button></div><div class="mb-6 p-4 border border-gray-700 rounded-lg"><h4 class="text-lg font-bold text-white mb-3">Create New User</h4><form id="add-user-form" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end"><div><label for="new-username" class="block text-sm text-gray-300 mb-1">Username</label><input type="text" id="new-username" class="w-full text-sm"></div><div><label for="new-password" class="block text-sm text-gray-300 mb-1">Password</label><input type="password" id="new-password" class="w-full text-sm"></div><div><label for="new-role" class="block text-sm text-gray-300 mb-1">Role</label><select id="new-role" class="w-full text-sm"><option value="viewer">Viewer</option><option value="finder">Finder</option><option value="admin">Admin</option></select></div><button type="submit" class="px-4 py-2 text-white font-bold rounded-lg solid-btn h-10">Create User</button></form><div id="add-user-status" class="mt-3 text-sm text-center"></div></div><h4 class="text-lg font-bold text-white mb-3">Manage Existing Users</h4><div class="overflow-y-auto"><table class="w-full text-left"><thead><tr class="bg-gray-800/80 text-gray-300 uppercase text-xs leading-normal"><th class="py-3 px-4">Username</th><th class="py-3 px-4">Role</th><th class="py-3 px-4">UID</th></tr></thead><tbody id="user-list-body" class="text-gray-400 text-sm font-light"></tbody></table></div></div></div>
+    <div id="admin-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden"><div class="modal-bg rounded-xl p-6 w-full max-w-4xl shadow-3xl border border-gray-700 max-h-[90vh] flex flex-col"><div class="flex justify-between items-center pb-3 border-b border-gray-700 mb-4"><h3 class="text-2xl font-bold text-white">Admin Panel</h3><button class="close-modal-btn text-gray-400 hover:text-gray-200 text-3xl transition-transform transform hover:rotate-90">&times;</button></div><h4 class="text-lg font-bold text-white mb-3">Manage User Roles</h4><div class="overflow-y-auto"><table class="w-full text-left"><thead><tr class="bg-gray-800/80 text-gray-300 uppercase text-xs leading-normal"><th class="py-3 px-4">Username</th><th class="py-3 px-4">Role</th><th class="py-3 px-4">UID</th></tr></thead><tbody id="user-list-body" class="text-gray-400 text-sm font-light"></tbody></table></div></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -76,10 +94,20 @@
 
         const FAKE_EMAIL_DOMAIN = "@glitchapp.local";
 
+        // Main Containers
         const loginContainer = document.getElementById('login-container');
+        const registerContainer = document.getElementById('register-container');
         const appContainer = document.getElementById('app-container');
+        
+        // Forms & Links
         const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegisterLink = document.getElementById('show-register-link');
+        const showLoginLink = document.getElementById('show-login-link');
         const authError = document.getElementById('auth-error');
+        const registerError = document.getElementById('register-error');
+        
+        // App UI
         const userNameElement = document.getElementById('user-name');
         const userRoleElement = document.getElementById('user-role');
         const logoutBtn = document.getElementById('logout-btn');
@@ -91,8 +119,6 @@
         const glitchForm = document.getElementById('glitch-form');
         const adminModal = document.getElementById('admin-modal');
         const userListBody = document.getElementById('user-list-body');
-        const addUserForm = document.getElementById('add-user-form');
-        const addUserStatus = document.getElementById('add-user-status');
 
         let currentUserRole = null;
         let unsubscribeGlitches = null;
@@ -119,205 +145,73 @@
                 adminPanelBtn.classList.toggle('hidden', role !== 'admin');
                 actionButtonsContainer.classList.toggle('hidden', !['admin', 'finder'].includes(role));
                 loginContainer.classList.add('hidden');
+                registerContainer.classList.add('hidden');
                 appContainer.classList.remove('hidden');
                 listenForGlitches();
             } else {
                 currentUserRole = null;
                 loginContainer.classList.remove('hidden');
+                registerContainer.classList.add('hidden');
                 appContainer.classList.add('hidden');
                 if (unsubscribeGlitches) unsubscribeGlitches();
             }
         };
 
-        loginForm.addEventListener('submit', async (e) => {
+        loginForm.addEventListener('submit', async (e) => { /* ... (no changes needed) ... */ });
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            authError.classList.add('hidden');
-            const username = loginForm.username.value.trim().toLowerCase();
-            const password = loginForm.password.value;
-            const email = username + FAKE_EMAIL_DOMAIN;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                loginForm.reset();
-            } catch (error) {
-                authError.textContent = "Invalid username or password.";
-                authError.classList.remove('hidden');
-            }
-        });
-
-        logoutBtn.addEventListener('click', () => signOut(auth));
-
-        function listenForGlitches() {
-            if (unsubscribeGlitches) unsubscribeGlitches();
-            const q = query(collection(db, "glitches"));
-            unsubscribeGlitches = onSnapshot(q, (snapshot) => {
-                const glitches = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                glitchTableBody.innerHTML = '';
-                document.getElementById('no-glitches-message').classList.toggle('hidden', glitches.length > 0);
-                glitches.sort((a,b) => (b.createdAt || '').localeCompare(a.createdAt || '')).forEach(glitch => {
-                    const row = document.createElement('tr');
-                    let statusColor = {'Works!': 'text-green-400', 'Patched': 'text-red-400'}[glitch.status] || 'text-gray-400';
-                    let actionsHtml = '';
-                    if (['admin', 'finder'].includes(currentUserRole)) {
-                        actionsHtml = `
-                            <button class="action-btn edit-btn mr-2" data-id="${glitch.id}" data-name="${glitch.glitchName}" data-description="${glitch.description}" data-maparea="${glitch.mapArea}" data-howto="${glitch.howTo}" data-status="${glitch.status}"><i class="fas fa-pencil-alt"></i></button>
-                            <button class="action-btn delete-btn" data-id="${glitch.id}"><i class="fas fa-trash-alt"></i></button>
-                        `;
-                    }
-                    row.className = 'border-b border-gray-700 hover:bg-gray-700/50';
-                    row.innerHTML = `<td class="py-3 px-4 sm:px-6"><span class="font-bold text-white">${glitch.glitchName || ''}</span></td><td class="py-3 px-4 sm:px-6">${glitch.description || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${glitch.mapArea || ''}</td><td class="py-3 px-4 sm:px-6">${glitch.howTo || ''}</td><td class="py-3 px-4 sm:px-6 text-center"><span class="font-bold ${statusColor}">${glitch.status}</span></td><td class="py-3 px-4 sm:px-6">${glitch.foundBy || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${actionsHtml}</td>`;
-                    glitchTableBody.appendChild(row);
-                });
-            });
-        }
-        
-        function resetGlitchModal() {
-            glitchForm.reset();
-            document.getElementById('edit-glitch-id').value = '';
-            document.getElementById('modal-title').textContent = 'Add New Glitch';
-            document.getElementById('save-glitch-btn').innerHTML = '<i class="fas fa-save mr-2"></i> Save Glitch';
-        }
-
-        addGlitchBtn.addEventListener('click', () => {
-            resetGlitchModal();
-            addGlitchModal.classList.remove('hidden');
-        });
-
-        glitchTableBody.addEventListener('click', async (e) => {
-            const editBtn = e.target.closest('.edit-btn');
-            const deleteBtn = e.target.closest('.delete-btn');
-
-            if (editBtn) {
-                resetGlitchModal();
-                const { id, name, description, maparea, howto, status } = editBtn.dataset;
-                document.getElementById('edit-glitch-id').value = id;
-                document.getElementById('glitch-name').value = name;
-                document.getElementById('description').value = description;
-                document.getElementById('map-area').value = maparea;
-                document.getElementById('how-to').value = howto;
-                document.getElementById('status').value = status;
-                document.getElementById('modal-title').textContent = 'Edit Glitch';
-                document.getElementById('save-glitch-btn').innerHTML = '<i class="fas fa-save mr-2"></i> Update Glitch';
-                addGlitchModal.classList.remove('hidden');
-            }
-
-            if (deleteBtn) {
-                const glitchId = deleteBtn.dataset.id;
-                if (confirm('Are you sure you want to delete this glitch?')) {
-                    try {
-                        await deleteDoc(doc(db, 'glitches', glitchId));
-                    } catch (error) {
-                        console.error("Error deleting glitch: ", error);
-                        alert('You do not have permission to delete this glitch.');
-                    }
-                }
-            }
-        });
-
-        glitchForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const glitchId = document.getElementById('edit-glitch-id').value;
-            const foundBy = glitchId ? undefined : cleanUsername(auth.currentUser.email);
-            const createdAt = glitchId ? undefined : new Date().toISOString();
-
-            let glitchData = {
-                glitchName: document.getElementById('glitch-name').value.trim(),
-                description: document.getElementById('description').value.trim(),
-                mapArea: document.getElementById('map-area').value.trim(),
-                howTo: document.getElementById('how-to').value.trim(),
-                status: document.getElementById('status').value,
-            };
-
-            // Only add foundBy and createdAt for new glitches
-            if (!glitchId) {
-                glitchData.foundBy = foundBy;
-                glitchData.createdAt = createdAt;
-            }
-
-            try {
-                if (glitchId) {
-                    const glitchRef = doc(db, 'glitches', glitchId);
-                    await updateDoc(glitchRef, glitchData);
-                } else {
-                    await addDoc(collection(db, 'glitches'), glitchData);
-                }
-                addGlitchModal.classList.add('hidden');
-            } catch (error) {
-                console.error("Error saving glitch: ", error);
-                alert("You do not have permission to save this glitch.");
-            }
-        });
-
-        addUserForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('new-username').value.trim().toLowerCase();
-            const password = document.getElementById('new-password').value;
-            const role = document.getElementById('new-role').value;
-            
-            addUserStatus.textContent = 'Creating...';
-            addUserStatus.className = 'mt-3 text-sm text-center text-yellow-400';
+            registerError.classList.add('hidden');
+            const username = registerForm.username.value.trim().toLowerCase();
+            const password = registerForm.password.value;
 
             if (username.length < 3 || password.length < 6) {
-                addUserStatus.textContent = 'Username must be 3+ chars, password 6+ chars.';
-                addUserStatus.className = 'mt-3 text-sm text-center text-red-400';
+                registerError.textContent = 'Username must be 3+ chars, password 6+ chars.';
+                registerError.classList.remove('hidden');
                 return;
             }
 
             const fakeEmail = username + FAKE_EMAIL_DOMAIN;
 
             try {
-                // We must use a temporary, secondary app instance to create a user
-                // without logging the current admin out. This is a known pattern.
-                const tempApp = initializeApp(firebaseConfig, 'SecondaryTemp' + Date.now());
-                const tempAuth = getAuth(tempApp);
-                const newUserCredential = await createUserWithEmailAndPassword(tempAuth, fakeEmail, password);
+                // Step 1: Create the user in Authentication
+                const newUserCredential = await createUserWithEmailAndPassword(auth, fakeEmail, password);
                 const newUser = newUserCredential.user;
 
-                // Now, using the main app's permissions, set the role in Firestore.
-                await setDoc(doc(db, 'users', newUser.uid), { username, role });
+                // Step 2: Create their user document with the 'viewer' role.
+                // The security rules will enforce that this role MUST be 'viewer'.
+                await setDoc(doc(db, 'users', newUser.uid), {
+                    username: username,
+                    role: 'viewer'
+                });
                 
-                addUserStatus.textContent = `User "${username}" created successfully!`;
-                addUserStatus.className = 'mt-3 text-sm text-center text-green-400';
-                addUserForm.reset();
-                populateAdminPanel(); // Refresh the user list
+                // The onAuthStateChanged listener will automatically log them in.
+                registerForm.reset();
+
             } catch (error) {
-                addUserStatus.textContent = `Error: ${error.code === 'auth/email-already-in-use' ? 'Username is already taken.' : error.message}`;
-                addUserStatus.className = 'mt-3 text-sm text-center text-red-400';
+                registerError.textContent = error.code === 'auth/email-already-in-use' ? 'Username is already taken.' : error.message;
+                registerError.classList.remove('hidden');
             }
         });
         
-        async function populateAdminPanel() {
-             if (currentUserRole !== 'admin') return;
-            const userSnapshot = await getDocs(collection(db, 'users'));
-            const users = userSnapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
-            userListBody.innerHTML = '';
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                row.className = 'border-b border-gray-700';
-                row.innerHTML = `<td class="py-3 px-4">${user.username || 'N/A'}</td><td class="py-3 px-4"><select data-uid="${user.id}" class="role-selector w-full bg-gray-700 border-gray-600 rounded p-2" ${user.id === auth.currentUser.uid ? 'disabled' : ''}><option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Viewer</option><option value="finder" ${user.role === 'finder' ? 'selected' : ''}>Finder</option><option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option></select></td><td class="py-3 px-4 text-xs font-mono text-gray-500">${user.id}</td>`;
-                userListBody.appendChild(row);
-            });
-        }
+        showRegisterLink.addEventListener('click', (e) => { e.preventDefault(); loginContainer.classList.add('hidden'); registerContainer.classList.remove('hidden'); });
+        showLoginLink.addEventListener('click', (e) => { e.preventDefault(); registerContainer.classList.add('hidden'); loginContainer.classList.remove('hidden'); });
 
-        adminPanelBtn.addEventListener('click', () => {
-            populateAdminPanel();
-            adminModal.classList.remove('hidden');
-        });
+        logoutBtn.addEventListener('click', () => signOut(auth));
         
-        userListBody.addEventListener('change', async (e) => {
-            if (e.target.classList.contains('role-selector')) {
-                const newRole = e.target.value;
-                const uid = e.target.dataset.uid;
-                if (uid === auth.currentUser.uid) { e.target.value = currentUserRole; return; }
-                try { await updateDoc(doc(db, 'users', uid), { role: newRole }); } catch (error) { console.error("Error updating role:", error); }
-            }
-        });
+        // --- All other JavaScript functions (listenForGlitches, glitchForm submission, etc.) remain unchanged ---
+        
+        // The rest of your existing, working JavaScript code...
+        loginForm.addEventListener('submit', async (e) => { e.preventDefault(); authError.classList.add('hidden'); const username = loginForm.username.value.trim().toLowerCase(); const password = loginForm.password.value; const email = username + FAKE_EMAIL_DOMAIN; try { await signInWithEmailAndPassword(auth, email, password); loginForm.reset(); } catch (error) { authError.textContent = "Invalid username or password."; authError.classList.remove('hidden'); } });
+        function listenForGlitches() { if (unsubscribeGlitches) unsubscribeGlitches(); const q = query(collection(db, "glitches")); unsubscribeGlitches = onSnapshot(q, (snapshot) => { const glitches = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); glitchTableBody.innerHTML = ''; document.getElementById('no-glitches-message').classList.toggle('hidden', glitches.length > 0); glitches.sort((a,b) => (b.createdAt || '').localeCompare(a.createdAt || '')).forEach(glitch => { const row = document.createElement('tr'); let statusColor = {'Works!': 'text-green-400', 'Patched': 'text-red-400'}[glitch.status] || 'text-gray-400'; let actionsHtml = ''; if (['admin', 'finder'].includes(currentUserRole)) { actionsHtml = `<button class="action-btn edit-btn mr-2" data-id="${glitch.id}" data-name="${glitch.glitchName}" data-description="${glitch.description}" data-maparea="${glitch.mapArea}" data-howto="${glitch.howTo}" data-status="${glitch.status}"><i class="fas fa-pencil-alt"></i></button><button class="action-btn delete-btn" data-id="${glitch.id}"><i class="fas fa-trash-alt"></i></button>`; } row.className = 'border-b border-gray-700 hover:bg-gray-700/50'; row.innerHTML = `<td class="py-3 px-4 sm:px-6"><span class="font-bold text-white">${glitch.glitchName || ''}</span></td><td class="py-3 px-4 sm:px-6">${glitch.description || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${glitch.mapArea || ''}</td><td class="py-3 px-4 sm:px-6">${glitch.howTo || ''}</td><td class="py-3 px-4 sm:px-6 text-center"><span class="font-bold ${statusColor}">${glitch.status}</span></td><td class="py-3 px-4 sm:px-6">${glitch.foundBy || ''}</td><td class="py-3 px-4 sm:px-6 text-center">${actionsHtml}</td>`; glitchTableBody.appendChild(row); }); }); }
+        function resetGlitchModal() { glitchForm.reset(); document.getElementById('edit-glitch-id').value = ''; document.getElementById('modal-title').textContent = 'Add New Glitch'; document.getElementById('save-glitch-btn').innerHTML = '<i class="fas fa-save mr-2"></i> Save Glitch'; }
+        addGlitchBtn.addEventListener('click', () => { resetGlitchModal(); addGlitchModal.classList.remove('hidden'); });
+        glitchTableBody.addEventListener('click', async (e) => { const editBtn = e.target.closest('.edit-btn'); const deleteBtn = e.target.closest('.delete-btn'); if (editBtn) { resetGlitchModal(); const { id, name, description, maparea, howto, status } = editBtn.dataset; document.getElementById('edit-glitch-id').value = id; document.getElementById('glitch-name').value = name; document.getElementById('description').value = description; document.getElementById('map-area').value = maparea; document.getElementById('how-to').value = howto; document.getElementById('status').value = status; document.getElementById('modal-title').textContent = 'Edit Glitch'; document.getElementById('save-glitch-btn').innerHTML = '<i class="fas fa-save mr-2"></i> Update Glitch'; addGlitchModal.classList.remove('hidden'); } if (deleteBtn) { const glitchId = deleteBtn.dataset.id; if (confirm('Are you sure you want to delete this glitch?')) { try { await deleteDoc(doc(db, 'glitches', glitchId)); } catch (error) { alert('You do not have permission to delete this glitch.'); } } } });
+        glitchForm.addEventListener('submit', async (e) => { e.preventDefault(); const glitchId = document.getElementById('edit-glitch-id').value; const foundBy = glitchId ? undefined : cleanUsername(auth.currentUser.email); const createdAt = glitchId ? undefined : new Date().toISOString(); let glitchData = { glitchName: document.getElementById('glitch-name').value.trim(), description: document.getElementById('description').value.trim(), mapArea: document.getElementById('map-area').value.trim(), howTo: document.getElementById('how-to').value.trim(), status: document.getElementById('status').value, }; if (!glitchId) { glitchData.foundBy = foundBy; glitchData.createdAt = createdAt; } try { if (glitchId) { await updateDoc(doc(db, 'glitches', glitchId), glitchData); } else { await addDoc(collection(db, 'glitches'), glitchData); } addGlitchModal.classList.add('hidden'); } catch (error) { alert("You do not have permission to save this glitch."); } });
+        async function populateAdminPanel() { if (currentUserRole !== 'admin') return; const userSnapshot = await getDocs(collection(db, 'users')); const users = userSnapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() })); userListBody.innerHTML = ''; users.sort((a,b) => (a.username || '').localeCompare(b.username || '')).forEach(user => { const row = document.createElement('tr'); row.className = 'border-b border-gray-700'; row.innerHTML = `<td class="py-3 px-4">${user.username || 'N/A'}</td><td class="py-3 px-4"><select data-uid="${user.id}" class="role-selector w-full bg-gray-700 border-gray-600 rounded p-2" ${user.id === auth.currentUser.uid ? 'disabled' : ''}><option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Viewer</option><option value="finder" ${user.role === 'finder' ? 'selected' : ''}>Finder</option><option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option></select></td><td class="py-3 px-4 text-xs font-mono text-gray-500">${user.id}</td>`; userListBody.appendChild(row); }); }
+        adminPanelBtn.addEventListener('click', () => { populateAdminPanel(); adminModal.classList.remove('hidden'); });
+        userListBody.addEventListener('change', async (e) => { if (e.target.classList.contains('role-selector')) { const newRole = e.target.value; const uid = e.target.dataset.uid; if (uid === auth.currentUser.uid) { e.target.value = currentUserRole; return; } try { await updateDoc(doc(db, 'users', uid), { role: newRole }); } catch (error) { console.error("Error updating role:", error); } } });
+        document.querySelectorAll('.close-modal-btn').forEach(btn => { btn.addEventListener('click', () => { addGlitchModal.classList.add('hidden'); adminModal.classList.add('hidden'); }); });
 
-        document.querySelectorAll('.close-modal-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                addGlitchModal.classList.add('hidden');
-                adminModal.classList.add('hidden');
-            });
-        });
     </script>
 </body>
 </html>
