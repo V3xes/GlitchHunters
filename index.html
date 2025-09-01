@@ -243,11 +243,8 @@
                 
                 setLogLevel('debug');
                 
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                // We're forcing anonymous sign-in for this public app
+                await signInAnonymously(auth);
                 
                 userId = auth.currentUser?.uid || 'anonymous';
                 userIdElement.textContent = userId;
